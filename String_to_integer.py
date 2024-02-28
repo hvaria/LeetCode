@@ -1,0 +1,48 @@
+class Solution:
+	def myAtoi(s):
+		value, state, pos, sign = 0,0,0,1
+
+		if len(s) == 0:
+			return 0 
+
+		while pos < len(s):
+			current_char = s[pos]
+			if state == 0:
+				if current_char == ' ':
+					state = 0
+				elif current_char == '+' or current_char == '-':
+					state = 1
+					sign = 1 if current_char == '+' else -1
+				elif current_char.isdigit():
+					state = 2
+					value = value * 10 + int(current_char)
+				else:
+					return 0
+
+			elif state == 1:
+				if current_char.isdigit():
+					state = 2
+					value = value * 10 + int(current_char)
+				else:
+					return 0
+
+			elif state == 2:
+				if current_char.isdigit():
+					state = 2
+					value = value * 10 + int(current_char)
+				else:
+					break
+			else:
+				return 0
+
+			pos += 1
+
+		value = sign * value
+		value = min(value, 2**31-1)
+		value = max(-(2 ** 31), value)
+
+		return value
+
+	s = '345'
+	answer = myAtoi(s)
+	print(answer, type(answer))
